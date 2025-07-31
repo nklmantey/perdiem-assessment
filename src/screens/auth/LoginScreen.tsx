@@ -3,13 +3,11 @@ import { Controller, useForm } from 'react-hook-form'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import styled from 'styled-components'
 
-import { loginUserEmailAndPassword } from '@/api'
+import { loginUserEmailAndPassword, loginUserGoogle } from '@/api'
 import { SafeareaContainer, Typography } from '@/components/global'
 import { Button, Divider, Input } from '@/components/ui'
 import { LoginInputType, loginSchema } from '@/schema'
 import { useAuthStore } from '@/stores'
-import { GoogleAuthProvider } from '@react-native-firebase/auth'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner-native'
 
@@ -38,18 +36,28 @@ export default function LoginScreen() {
 		},
 	})
 
+	const { mutate: handleLoginUserGoogle, isPending: isLoggingInWithGoogle } = useMutation({
+		mutationKey: loginUserGoogle.key,
+		mutationFn: loginUserGoogle.fn,
+		onSuccess: (d) => {
+			if (d) {
+				setToken(d.idToken)
+				setUser({
+					email: d.authResult.user.email ?? '',
+					uid: d.authResult.user.uid,
+					name: d.authResult.user.displayName ?? undefined,
+					photoURL: d.authResult.user.photoURL ?? undefined,
+				})
+				toast.success('Successfully signed in with Google!')
+			}
+		},
+		onError: (e) => {
+			toast.error(e.message)
+		},
+	})
+
 	function onSubmit(payload: LoginInputType) {
 		handleLoginUserEmailAndPassword(payload)
-	}
-
-	async function onLoginWithGoogle() {
-		await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
-
-		const { data } = await GoogleSignin.signIn()
-		console.log('idToken', data)
-
-		const gc = GoogleAuthProvider.credential(data?.idToken!)
-		console.log('gc', gc)
 	}
 
 	return (
@@ -101,7 +109,7 @@ export default function LoginScreen() {
 						</Typography>
 						<Divider />
 					</DividerContainer>
-					<Button title='Log in with Google' variant='secondary' onPress={onLoginWithGoogle} />
+					<Button title='Log in with Google' variant='secondary' onPress={handleLoginUserGoogle} isLoading={isLoggingInWithGoogle} />
 				</ButtonsContainer>
 			</ScrollView>
 		</SafeareaContainer>

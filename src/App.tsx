@@ -16,9 +16,7 @@ export default function App() {
 	const isLoadingComplete = useCachedResources()
 
 	useEffect(() => {
-		GoogleSignin.configure({
-			webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-		})
+		GoogleSignin.configure()
 	}, [])
 
 	if (!isLoadingComplete) {
