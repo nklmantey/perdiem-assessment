@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1000493989621",
+    "project_id": "perdiem-d3303",
+    "storage_bucket": "perdiem-d3303.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1000493989621:android:2e1d214b2a5c1b2ca74fbc",
+        "android_client_info": {
+          "package_name": "com.nklmantey.perdiemassessment"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1000493989621-7bnetrumo21gl39v7r4tq4iner027ouk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD_qlSKRAAi5Qj6aGW1bI6DH19kwxlI11Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1000493989621-7bnetrumo21gl39v7r4tq4iner027ouk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1000493989621-ihpemcn6g1dbg6r99ffo2dbbfhe2139t.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.nklmantey.perdiem-assessment"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

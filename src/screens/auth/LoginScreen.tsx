@@ -8,11 +8,14 @@ import { SafeareaContainer, Typography } from '@/components/global'
 import { Button, Divider, Input } from '@/components/ui'
 import { LoginInputType, loginSchema } from '@/schema'
 import { useAuthStore } from '@/stores'
+import { GoogleAuthProvider } from '@react-native-firebase/auth'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import { useMutation } from '@tanstack/react-query'
 import { toast } from 'sonner-native'
 
 export default function LoginScreen() {
 	const { setToken, setUser } = useAuthStore()
+
 	const {
 		control,
 		handleSubmit,
@@ -22,7 +25,7 @@ export default function LoginScreen() {
 		resolver: zodResolver(loginSchema),
 	})
 
-	const { mutate: handleLogin, isPending } = useMutation({
+	const { mutate: handleLoginUserEmailAndPassword, isPending } = useMutation({
 		mutationKey: loginUserEmailAndPassword.key,
 		mutationFn: loginUserEmailAndPassword.fn,
 		onSuccess: (d) => {
@@ -36,7 +39,17 @@ export default function LoginScreen() {
 	})
 
 	function onSubmit(payload: LoginInputType) {
-		handleLogin(payload)
+		handleLoginUserEmailAndPassword(payload)
+	}
+
+	async function onLoginWithGoogle() {
+		await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true })
+
+		const { data } = await GoogleSignin.signIn()
+		console.log('idToken', data)
+
+		const gc = GoogleAuthProvider.credential(data?.idToken!)
+		console.log('gc', gc)
 	}
 
 	return (
@@ -88,7 +101,7 @@ export default function LoginScreen() {
 						</Typography>
 						<Divider />
 					</DividerContainer>
-					<Button title='Log in with Google' variant='secondary' />
+					<Button title='Log in with Google' variant='secondary' onPress={onLoginWithGoogle} />
 				</ButtonsContainer>
 			</ScrollView>
 		</SafeareaContainer>

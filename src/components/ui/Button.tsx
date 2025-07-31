@@ -13,7 +13,7 @@ type ButtonProps = {
 
 const BUTTON_COLOR_MAP = {
 	primary: '#eb1600',
-	secondary: '#c9c9c9',
+	secondary: 'transparent',
 	danger: 'maroon',
 }
 
@@ -21,11 +21,11 @@ export default function Button({ title, onPress, isLoading, isDisabled, variant 
 	const color = BUTTON_COLOR_MAP[variant]
 
 	return (
-		<ButtonContainer onPress={onPress} disabled={isDisabled || isLoading} activeOpacity={0.9} color={color}>
+		<ButtonContainer onPress={onPress} disabled={isDisabled || isLoading} activeOpacity={0.9} color={color} variant={variant}>
 			{isLoading ? (
-				<ActivityIndicator size='small' color='#e9e9e9' />
+				<ActivityIndicator size='small' color={variant === 'primary' ? '#e9e9e9' : 'maroon'} />
 			) : (
-				<Typography weight='median' variant='button'>
+				<Typography weight='median' variant={variant === 'primary' ? 'button' : 'danger'}>
 					{title}
 				</Typography>
 			)}
@@ -33,7 +33,7 @@ export default function Button({ title, onPress, isLoading, isDisabled, variant 
 	)
 }
 
-const ButtonContainer = styled(TouchableOpacity)<{ color: string }>`
+const ButtonContainer = styled(TouchableOpacity)<{ color: string; variant: ButtonProps['variant'] }>`
 	width: 100%;
 	border-radius: 8px;
 	align-items: center;
@@ -41,5 +41,6 @@ const ButtonContainer = styled(TouchableOpacity)<{ color: string }>`
 	height: 40px;
 	justify-content: center;
 	background-color: ${(props) => props.color};
+	border: ${(props) => (props.variant === 'secondary' ? '1px solid maroon' : 0)};
 	opacity: ${(props) => (props.disabled ? 0.5 : 1)};
 `
