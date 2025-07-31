@@ -21,7 +21,10 @@ export default function RootNavigation() {
 				}}
 			>
 				{user && token ? (
-					<Stack.Screen name='HomeScreen' component={HomeScreen} />
+					<>
+						<Stack.Screen name='HomeScreen' component={HomeScreen} />
+						{/* <Stack.Screen name='StoreScreen' component={StoreScreen} /> */}
+					</>
 				) : (
 					<Stack.Screen name='LoginScreen' component={LoginScreen} />
 				)}

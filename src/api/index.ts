@@ -13,11 +13,8 @@ export const loginUserEmailAndPassword = {
 
 		try {
 			const { data } = await axios.post(url, payload)
-
-			// RES IS TOKEN
 			return data
 		} catch (error: any) {
-			// ERROR IS 401
 			throw new Error('Invalid credentials, try again')
 		}
 	},
@@ -56,6 +53,34 @@ export const loginUserGoogle = {
 				}
 			} else {
 			}
+		}
+	},
+}
+
+export const getStoreTimes = {
+	key: ['getStoreTimes'],
+	fn: async () => {
+		const url = BASE_URL + '/store-times'
+
+		try {
+			const { data } = await axios.get(url)
+			return data
+		} catch (error: any) {
+			throw new Error('Failed to fetch, try again')
+		}
+	},
+}
+
+export const getStoreOverride = {
+	key: ['getStoreOverride'],
+	fn: async ({ month, day }: { month: string; day: string }) => {
+		const url = BASE_URL + `/store-overrides/date/${month}/${day}`
+
+		try {
+			const { data } = await axios.get(url)
+			return data
+		} catch (error: any) {
+			return { message: 'No store overrides' }
 		}
 	},
 }

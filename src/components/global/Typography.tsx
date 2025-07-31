@@ -1,11 +1,13 @@
 import { Text } from 'react-native'
 import styled from 'styled-components'
 
+import { ReactNode } from 'react'
+
 type TypographyProps = {
 	weight?: 'bulky' | 'median' | 'neutral' | 'slim'
-	size?: 'sm' | 'base' | 'lg' | 'xl'
+	size?: 'xs' | 'sm' | 'base' | 'lg' | 'xl'
 	variant?: 'primary' | 'secondary' | 'danger' | 'button'
-	children: string
+	children: ReactNode
 }
 
 const FONT_WEIGHT_MAP = {
@@ -16,6 +18,7 @@ const FONT_WEIGHT_MAP = {
 }
 
 const FONT_SIZE_MAP = {
+	xs: '11px',
 	sm: '14px',
 	base: '16px',
 	lg: '20px',

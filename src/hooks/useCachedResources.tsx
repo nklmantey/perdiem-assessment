@@ -10,7 +10,6 @@ export default function useCachedResources() {
 			try {
 				SplashScreen.preventAutoHideAsync()
 
-				// Load fonts
 				await Font.loadAsync({
 					PolysansBulky: require('../../assets/fonts/polysanstrial-bulky.otf'),
 					PolysansMedian: require('../../assets/fonts/polysanstrial-median.otf'),

@@ -1,3 +1,4 @@
+import { useAppInfoStore } from './app'
 import { useAuthStore } from './auth'
 
-export { useAuthStore }
+export { useAppInfoStore, useAuthStore }
