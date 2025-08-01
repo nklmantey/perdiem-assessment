@@ -3,6 +3,7 @@ import { Header, SafeareaContainer, Typography } from '@/components/global'
 import { TabToggle } from '@/components/ui'
 import { useDateTimePicker, useGreeting, useStoreOverrides, useStoreSchedule } from '@/hooks'
 import { useAppInfoStore, useAuthStore } from '@/stores'
+import * as Notifications from 'expo-notifications'
 import { useEffect, useState } from 'react'
 import { ScrollView, View } from 'react-native'
 import styled from 'styled-components'
@@ -10,11 +11,9 @@ import styled from 'styled-components'
 export default function HomeScreen() {
 	const { user } = useAuthStore()
 	const { timezone, setTimezone, appointment } = useAppInfoStore()
-
 	const storeTimes = useStoreSchedule()
 	const currentGreeting = useGreeting(timezone)
 	const { storeOverrides, overridesLoading, hasAnyOverrides, storeOverrideMutation } = useStoreOverrides(storeTimes)
-
 	const [selectedStoreHours, setSelectedStoreHours] = useState<{ startTime: string; endTime: string } | null>(null)
 
 	const {
@@ -44,6 +43,19 @@ export default function HomeScreen() {
 		initializeDateAnimations()
 	}, [])
 
+	// Find next store opening when store data changes
+	// const res = findNextStoreOpening(storeTimes, storeOverrides)
+	// console.log('res', res)
+
+	Notifications.setNotificationHandler({
+		handleNotification: async () => ({
+			shouldShowBanner: true,
+			shouldShowList: true,
+			shouldPlaySound: false,
+			shouldSetBadge: false,
+		}),
+	})
+
 	const timezoneOptions: { label: string; value: 'nyc' | 'local' }[] = [
 		{ label: 'NYC', value: 'nyc' },
 		{ label: 'Local', value: 'local' },
@@ -58,10 +70,23 @@ export default function HomeScreen() {
 					<Typography weight='median' size='lg'>
 						{currentGreeting}
 					</Typography>
-					<Typography variant='secondary'>{user?.name ?? user?.email}</Typography>
+					<Typography variant='secondary'>{(user as any)?.name ?? user?.email}</Typography>
 				</TextContainer>
 				<Header />
 			</HeaderContainer>
+
+			{/* <Button
+				title='Trigger local push notification'
+				onPress={() =>
+					Notifications.scheduleNotificationAsync({
+						content: {
+							title: 'Store Opening Soon!',
+							body: 'The store is opening in the next hour!',
+						},
+						trigger: null,
+					})
+				}
+			/> */}
 
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<DateTimeContainer>

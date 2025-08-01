@@ -1,11 +1,9 @@
-import { useAuthStore } from '@/stores'
+import { performLogout } from '@/utils'
 import { Ionicons } from '@expo/vector-icons'
 import { Alert, TouchableOpacity } from 'react-native'
 import styled from 'styled-components'
 
 export default function Header() {
-	const { logout } = useAuthStore()
-
 	function handleLogout() {
 		Alert.alert('Log out', 'Are you sure you want to log out?', [
 			{
@@ -15,7 +13,7 @@ export default function Header() {
 			{
 				text: 'Logout',
 				style: 'destructive',
-				onPress: logout,
+				onPress: performLogout,
 			},
 		])
 	}

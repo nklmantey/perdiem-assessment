@@ -1,16 +1,15 @@
 import 'react-native-gesture-handler'
 
-import { Ionicons } from '@expo/vector-icons'
-import { StatusBar } from 'expo-status-bar'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { SafeAreaProvider } from 'react-native-safe-area-context'
-import { Toaster } from 'sonner-native'
-
 import { useCachedResources } from '@/hooks'
 import { RootNavigation } from '@/navigation'
 import { TanstackProvider } from '@/providers'
+import { Ionicons } from '@expo/vector-icons'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { Toaster } from 'sonner-native'
 
 export default function App() {
 	const isLoadingComplete = useCachedResources()
@@ -27,7 +26,7 @@ export default function App() {
 		<SafeAreaProvider>
 			<GestureHandlerRootView>
 				<TanstackProvider>
-					<StatusBar style='auto' />
+					<StatusBar style='dark' />
 					<RootNavigation />
 					<Toaster
 						position='top-center'

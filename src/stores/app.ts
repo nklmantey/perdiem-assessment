@@ -17,6 +17,7 @@ type AppInfoStore = {
 	appointment: Appointment | null
 	setAppointment: (appointment: Appointment) => void
 	clearAppointment: () => void
+	clearAll: () => void
 }
 
 export const useAppInfoStore = create<AppInfoStore>()(
@@ -29,6 +30,7 @@ export const useAppInfoStore = create<AppInfoStore>()(
 			appointment: null,
 			setAppointment: (appointment: Appointment) => set({ appointment }),
 			clearAppointment: () => set({ appointment: null }),
+			clearAll: () => set({ timezone: null, storeTimes: null, appointment: null }),
 		}),
 		{
 			name: 'app-info-storage',

@@ -15,6 +15,7 @@ export const loginUserEmailAndPassword = {
 			const { data } = await axios.post(url, payload)
 			return data
 		} catch (error: any) {
+			console.log('error', error)
 			throw new Error('Invalid credentials, try again')
 		}
 	},

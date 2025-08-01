@@ -30,8 +30,6 @@ export function useStoreOverrides(storeTimes: any) {
 			const day = dateSlot.date.getDate().toString()
 			const dateKey = `${month}/${day}`
 
-			console.log(`🔍 Checking override for ${dateSlot.label} (${dateKey}):`)
-
 			try {
 				const overrideData = await storeOverrideMutation.mutateAsync({ month, day })
 
@@ -42,28 +40,12 @@ export function useStoreOverrides(storeTimes: any) {
 
 					overrides[dateKey] = finalOverride
 					hasOverrides = true
-					console.log(`✅ Override found for ${dateSlot.label}:`, {
-						is_open: finalOverride.is_open,
-						start_time: finalOverride.start_time,
-						end_time: finalOverride.end_time,
-						all_overrides: overrideData,
-					})
 				} else {
-					console.log(`❌ No override for ${dateSlot.label} - using regular schedule`)
 				}
 			} catch (error) {
-				console.log(`❌ Error/404 for ${dateSlot.label} - no override exists`)
 				continue
 			}
 		}
-
-		console.log('📊 Final overrides summary:', {
-			total_dates_checked: dateSlots.length,
-			overrides_found: Object.keys(overrides).length,
-			has_any_overrides: hasOverrides,
-			override_dates: Object.keys(overrides),
-			override_details: overrides,
-		})
 
 		setStoreOverrides(overrides)
 		setHasAnyOverrides(hasOverrides)
