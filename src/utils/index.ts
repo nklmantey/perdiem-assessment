@@ -1,5 +1,4 @@
 import { useAppInfoStore, useAuthStore } from '@/stores'
-import { QueryClient } from '@tanstack/react-query'
 
 export type StoreScheduleItem = {
 	id: string
@@ -170,11 +169,9 @@ export function logNextStoreOpening(storeTimes: any[], storeOverrides: Record<st
 }
 
 export function performLogout() {
-	// Clear auth store
 	const { logout: authLogout } = useAuthStore.getState()
 	authLogout()
 
-	// Clear app store
 	const { clearAll: clearAppStore } = useAppInfoStore.getState()
 	clearAppStore()
 }

@@ -1,7 +1,7 @@
 import { AppointmentDisplay, ConfirmationStep, DateSelectionStep, TimeSelectionStep } from '@/components/app'
 import { Header, SafeareaContainer, Typography } from '@/components/global'
-import { TabToggle } from '@/components/ui'
-import { useDateTimePicker, useGreeting, useStoreOverrides, useStoreSchedule } from '@/hooks'
+import { Button, TabToggle } from '@/components/ui'
+import { useDateTimePicker, useGreeting, usePushNotifications, useStoreNotification, useStoreOverrides, useStoreSchedule } from '@/hooks'
 import { useAppInfoStore, useAuthStore } from '@/stores'
 import * as Notifications from 'expo-notifications'
 import { useEffect, useState } from 'react'
@@ -15,6 +15,9 @@ export default function HomeScreen() {
 	const currentGreeting = useGreeting(timezone)
 	const { storeOverrides, overridesLoading, hasAnyOverrides, storeOverrideMutation } = useStoreOverrides(storeTimes)
 	const [selectedStoreHours, setSelectedStoreHours] = useState<{ startTime: string; endTime: string } | null>(null)
+
+	const { currentOpening } = useStoreNotification(storeTimes, storeOverrides, timezone, overridesLoading)
+	const { expoPushToken } = usePushNotifications()
 
 	const {
 		selectedDate,
@@ -43,19 +46,6 @@ export default function HomeScreen() {
 		initializeDateAnimations()
 	}, [])
 
-	// Find next store opening when store data changes
-	// const res = findNextStoreOpening(storeTimes, storeOverrides)
-	// console.log('res', res)
-
-	Notifications.setNotificationHandler({
-		handleNotification: async () => ({
-			shouldShowBanner: true,
-			shouldShowList: true,
-			shouldPlaySound: false,
-			shouldSetBadge: false,
-		}),
-	})
-
 	const timezoneOptions: { label: string; value: 'nyc' | 'local' }[] = [
 		{ label: 'NYC', value: 'nyc' },
 		{ label: 'Local', value: 'local' },
@@ -75,18 +65,49 @@ export default function HomeScreen() {
 				<Header />
 			</HeaderContainer>
 
-			{/* <Button
-				title='Trigger local push notification'
-				onPress={() =>
-					Notifications.scheduleNotificationAsync({
+			{overridesLoading ? (
+				<View style={{ backgroundColor: '#fff3cd', padding: 12, borderRadius: 8, marginBottom: 16 }}>
+					<Typography weight='median' size='sm'>
+						Loading store overrides...
+					</Typography>
+					<Typography variant='secondary' size='sm'>
+						Notifications will be scheduled once data is loaded
+					</Typography>
+				</View>
+			) : currentOpening ? (
+				<View style={{ backgroundColor: '#f0f0f0', padding: 12, borderRadius: 8, marginBottom: 16 }}>
+					<Typography weight='median' size='sm'>
+						Next Store Opening
+					</Typography>
+					<Typography variant='secondary' size='sm'>
+						{currentOpening.dayName} at {currentOpening.startTime}
+					</Typography>
+					<Typography variant='secondary' size='sm'>
+						{currentOpening.isOverride ? 'Override' : 'Regular Schedule'}
+					</Typography>
+					<Typography variant='secondary' size='sm'>
+						Notification scheduled for:{' '}
+						{currentOpening.openingTime
+							? new Date(currentOpening.openingTime.getTime() - 60 * 60 * 1000).toLocaleString()
+							: 'Not scheduled'}
+					</Typography>
+				</View>
+			) : null}
+
+			<Button
+				title='Test Notification'
+				onPress={async () => {
+					console.log('Scheduling test notification...')
+					const notificationId = await Notifications.scheduleNotificationAsync({
 						content: {
-							title: 'Store Opening Soon!',
-							body: 'The store is opening in the next hour!',
+							title: '🧪 Test Notification',
+							body: 'This is a test notification to validate the system is working!',
 						},
 						trigger: null,
 					})
-				}
-			/> */}
+					console.log('Test notification scheduled with ID:', notificationId)
+				}}
+			/>
 
 			<ScrollView showsVerticalScrollIndicator={false}>
 				<DateTimeContainer>
