@@ -130,7 +130,3 @@ if (notificationTime > now && isToday) {
 - **Graceful Degradation**: If notifications fail, the app continues to function
 - **Console Logging**: Comprehensive logging for debugging
 - **Fallback Logic**: Falls back to regular schedule if overrides fail
-
-## 🎥 Demo Video
-
-Watch the implementation in action: [Loom Demo](https://www.loom.com/share/825a27dae9cb443da1160a665c5212ae?sid=3ba5cc08-a4f0-4c46-8b1e-d8bdefd88909)
